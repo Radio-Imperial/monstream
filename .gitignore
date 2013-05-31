@@ -12,11 +12,20 @@ eggs
 parts
 bin
 var
+include
 sdist
 develop-eggs
 .installed.cfg
 lib
 lib64
+*.kpf
+venv
+*.DS_Store
+*.swp
+*.idea
+*.pyc
+*.pyo
+.Python
 
 # Installer logs
 pip-log.txt
@@ -33,3 +42,6 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+# Don't store secret keys in version control
+secret_keys.py
