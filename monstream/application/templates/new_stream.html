@@ -1,0 +1,86 @@
+<div class="modal hide fade" id="new-stream-modal">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">&times;</button>
+        <h3>Add a New Stream</h3>
+    </div>
+    <div class="modal-body">
+        <form id="new-stream-form" class="well form-horizontal"
+            action="{{ url_for('list_streams') }}" method="post" accept-charset="utf-8">
+            <fieldset>
+                {{ form.hidden_tag() }}
+                <div class="control-group">
+                    <div class="control-label">{{ form.stream_name.label }}</div>
+                    <div class="controls">
+                        {{ form.stream_name|safe }}
+                        {% if form.stream_name.errors %}
+                        <ul class="errors">
+                            {% for error in form.stream_name.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label">{{ form.stream_type.label }}</div>
+                    <div class="controls">
+                        {{ form.stream_type|safe }}
+                        {% if form.stream_type.errors %}
+                        <ul class="errors">
+                            {% for error in form.stream_type.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label">{{ form.stream_hostname.label }}</div>
+                    <div class="controls">
+                        {{ form.stream_hostname|safe }}
+                        {% if form.stream_hostname.errors %}
+                        <ul class="errors">
+                            {% for error in form.stream_hostname.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label">{{ form.stream_port.label }}</div>
+                    <div class="controls">
+                        {{ form.stream_port|safe }}
+                        {% if form.stream_port.errors %}
+                        <ul class="errors">
+                            {% for error in form.stream_port.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label">{{ form.stream_descriptor.label }}</div>
+                    <div class="controls">
+                        {{ form.stream_descriptor|safe }}
+                        {% if form.stream_descriptor.errors %}
+                        <ul class="errors">
+                            {% for error in form.stream_descriptor.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <input class="btn btn-primary" type="submit" value="Add Stream"/>
+                        <button class="btn" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
