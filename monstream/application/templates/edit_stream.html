@@ -1,42 +1,81 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h3>Edit Example</h3>
-    <form id="edit-example" class="well form-horizontal"
-          action="{{ url_for('edit_example', example_id=example.key.id()) }}" method="post" accept-charset="utf-8">
+    <h3>Edit Stream</h3>
+    <form id="edit-stream" class="well form-horizontal"
+          action="{{ url_for('edit_stream', stream_id=stream.key.id()) }}" method="post" accept-charset="utf-8">
         <fieldset>
             {{ form.hidden_tag() }}
             <input type="hidden" name="mode" value="edit" />
             <div class="control-group">
-                <div class="control-label">{{ form.example_name.label }}</div>
+                <div class="control-label">{{ form.stream_name.label }}</div>
                 <div class="controls">
-                    {{ form.example_name|safe }}
-                    {% if form.example_name.errors %}
-                        <ul class="errors">
-                            {% for error in form.example_name.errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
+                    {{ form.stream_name|safe }}
+                    {% if form.stream_name.errors %}
+                    <ul class="errors">
+                        {% for error in form.stream_name.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label">{{ form.stream_type.label }}</div>
+                <div class="controls">
+                    {{ form.stream_type|safe }}
+                    {% if form.stream_type.errors %}
+                    <ul class="errors">
+                        {% for error in form.stream_type.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label">{{ form.stream_hostname.label }}</div>
+                <div class="controls">
+                    {{ form.stream_hostname|safe }}
+                    {% if form.stream_hostname.errors %}
+                    <ul class="errors">
+                        {% for error in form.stream_hostname.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label">{{ form.stream_port.label }}</div>
+                <div class="controls">
+                    {{ form.stream_port|safe }}
+                    {% if form.stream_port.errors %}
+                    <ul class="errors">
+                        {% for error in form.stream_port.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
                         </ul>
                     {% endif %}
                 </div>
             </div>
             <div class="control-group">
-                <div class="control-label">{{ form.example_description.label }}</div>
+                <div class="control-label">{{ form.stream_descriptor.label }}</div>
                 <div class="controls">
-                    {{ form.example_description|safe }}
-                    {% if form.example_description.errors %}
-                        <ul class="errors">
-                            {% for error in form.example_description.errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
+                    {{ form.stream_descriptor|safe }}
+                    {% if form.stream_descriptor.errors %}
+                    <ul class="errors">
+                        {% for error in form.stream_descriptor.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
                     {% endif %}
                 </div>
             </div>
             <div class="control-group">
                 <div class="controls">
                     <input class="btn btn-primary" type="submit" value="Save Changes"/>
-                    <a class="btn cancel" href="{{ url_for('list_examples') }}">Cancel</a>
+                    <a class="btn cancel" href="{{ url_for('list_streams') }}">Cancel</a>
                 </div>
             </div>
         </fieldset>

@@ -21,6 +21,9 @@ app.add_url_rule('/', 'home', view_func=views.home)
 # Stream list page
 app.add_url_rule('/stream', 'list_streams', view_func=views.list_streams, methods=['GET', 'POST'])
 
+# Stream show page
+app.add_url_rule('/stream/<int:stream_id>', 'show_stream', view_func=views.show_stream, methods=['GET'])
+
 # Edit a stream
 app.add_url_rule('/stream/<int:stream_id>/edit', 'edit_stream', view_func=views.edit_stream, methods=['GET', 'POST'])
 

@@ -43,7 +43,7 @@ def list_streams():
         try:
             stream.put()
             stream_id = stream.key.id()
-            flash(u'Strea %s successfully saved.' % stream_id, 'success')
+            flash(u'Stream %s successfully saved.' % stream_id, 'success')
             return redirect(url_for('list_streams'))
         except CapabilityDisabledError:
             flash(u'App Engine Datastore is currently in read-only mode.', 'info')
@@ -79,6 +79,12 @@ def delete_stream(stream_id):
     except CapabilityDisabledError:
         flash(u'App Engine Datastore is currently in read-only mode.', 'info')
         return redirect(url_for('list_streams'))
+
+@login_required
+def show_stream(stream_id):
+    """SHow stream object"""
+    stream = StreamModel.get_by_id(stream_id)
+    return render_template('show_stream.html', stream=stream)
 
 
 def warmup():

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row-fluid">
+        <div class="span12">
+            <h1 id="">Show Stream</h1>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <dl class="dl-horizontal">
+                {% set stream_id = stream.key.id() %}
+                <dt>#</dt>
+                <dd>{{ stream_id }}</dd>
+                <dt>Name</dt>
+                <dd>{{ stream.stream_name }}</dd>
+                <dt>Type</dt>
+                <dd>{{ stream.stream_type }}</dd>
+                <dt>Hostname</dt>
+                <dd>{{ stream.stream_hostname }}</dd>
+                <dt>Port</dt>
+                <dd>{{ stream.stream_port }}</dd>
+                <dt>Descriptor</dt>
+                <dd>{{ stream.stream_descriptor }}</dd>
+                <dt>Added by</dt>
+                <dd>{{ stream.added_by }}</dd>
+            </dl>
+        </div>
+    </div>
+    <br/>
+    <div class="row-fluid">
+        <div class="span12">
+            <form method="post" action="{{ url_for('delete_stream', stream_id=stream_id) }}">
+                <div class="btn-toolbar" style="margin: 0;">
+                    <a href="{{ url_for('edit_stream', stream_id=stream_id) }}" class="btn"><i class="icon-pencil"></i> Edit</a>
+                    <button class="btn btn-danger"><i class="icon-trash icon-white"></i> Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock content %}
+

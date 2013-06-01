@@ -1,60 +1,54 @@
 {% extends "base.html" %}
 
-{% block style_block %}
-    <style type="text/css">
-        table.table { width: 60%; }
-    </style>
-{% endblock %}
-
 {% block content %}
-
-    <h1 id="">All Streams</h1>
-    <div>&nbsp;</div>
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Hostname</th>
-                <th>Port</th>
-                <th>Descriptor</th>
-                <th>Added by</th>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for stream in streams %}
-            {% set stream_id = stream.key.id() %}
-            <tr>
-                <td>{{ stream_id }}</td>
-                <td>{{ stream.stream_name }}</td>
-                <td>{{ stream.stream_type }}</td>
-                <td>{{ stream.stream_hostname }}</td>
-                <td>{{ stream.stream_port }}</td>
-                <td>{{ stream.stream_descriptor }}</td>
-                <td>{{ stream.added_by }}</td>
-                <td>
-                    <a href="{{ url_for('edit_stream', stream_id=stream_id) }}" class="btn">Edit</a>
-                </td>
-                <td>
-                    <form method="post" action="{{ url_for('delete_stream', stream_id=stream_id) }}">
-                        <button class="btn">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            {% else %}
-            <tr><td colspan="9">Nothing to see here!</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <p>
-        <a class="btn btn-primary" data-toggle="modal" data-target="#new-stream-modal">
-            <i class="icon-plus-sign icon-white"></i>
-            New Stream
-        </a>
-    </p>
+    <div class="row-fluid">
+        <div class="span12">
+            <h1 id="">All Streams</h1>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Hostname</th>
+                        <th>Port</th>
+                        <th>Descriptor</th>
+                        <th>Added by</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stream in streams %}
+                    {% set stream_id = stream.key.id() %}
+                    <tr>
+                        <td>{{ stream.stream_name }}</td>
+                        <td>{{ stream.stream_type }}</td>
+                        <td>{{ stream.stream_hostname }}</td>
+                        <td>{{ stream.stream_port }}</td>
+                        <td>{{ stream.stream_descriptor }}</td>
+                        <td>{{ stream.added_by }}</td>
+                        <td>
+                            <a href="{{ url_for('show_stream', stream_id=stream_id) }}" class="btn">Show &raquo;</a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="9">Nothing to see here!</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <a class="btn btn-primary" data-toggle="modal" data-target="#new-stream-modal">
+                <i class="icon-plus icon-white"></i>
+                New Stream
+            </a>
+        </div>
+    </div>
 
     {% include 'new_stream.html' %} {# pull in new_stream form (modal dialog) #}
 

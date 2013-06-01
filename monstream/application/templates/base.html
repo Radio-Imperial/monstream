@@ -18,14 +18,10 @@
     {% block head_script %}{# defer-incapable JS block #}{% endblock %}
 </head>
 <body>
-    <div id="header">
-        {% include 'includes/nav.html' %} {# pull in navbar #}
-    </div>
-    <div class="container" id="maincontent">
+    {% include 'includes/nav.html' %} {# pull in navbar #}
+    <div class="container-fluid">
         {% include 'includes/flash_message.html' %} {# page-level feedback notices #}
-        <div id="body_content">
-            {% block content %}{# main content area #}{% endblock %}
-        </div>
+        {% block content %}{# main content area #}{% endblock %}
     </div><!-- /container -->
     <footer>
         <div id="footer" class="container">
