@@ -19,6 +19,9 @@ from application import app
 from decorators import login_required, admin_required
 from forms import StreamForm
 from models import StreamModel
+from models import StreamCheckModel
+
+from services import check_streams
 
 # Flask-Cache (configured to use App Engine Memcache API)
 cache = Cache(app)
@@ -37,7 +40,7 @@ def list_streams():
             stream_type = form.stream_type.data,
             stream_hostname = form.stream_hostname.data,
             stream_port = form.stream_port.data,
-            stream_descriptor = form.stream_descriptor.data,
+            stream_shoutcast_sid = form.stream_shoutcast_sid.data,
             added_by = users.get_current_user()
         )
         try:
@@ -50,7 +53,6 @@ def list_streams():
             return redirect(url_for('list_streams'))
     return render_template('list_streams.html', streams=streams, form=form)
 
-
 @login_required
 def edit_stream(stream_id):
     stream = StreamModel.get_by_id(stream_id)
@@ -61,12 +63,11 @@ def edit_stream(stream_id):
             stream.stream_type = form.data.get('stream_type')
             stream.stream_hostname = form.data.get('stream_hostname')
             stream.stream_port = form.data.get('stream_port')
-            stream.stream_descriptor = form.data.get('stream_descriptor')
+            stream.stream_shoutcast_sid = form.data.get('stream_shoutcast_sid')
             stream.put()
             flash(u'Stream %s successfully saved.' % stream_id, 'success')
             return redirect(url_for('list_streams'))
     return render_template('edit_stream.html', stream=stream, form=form)
-
 
 @login_required
 def delete_stream(stream_id):
@@ -82,10 +83,15 @@ def delete_stream(stream_id):
 
 @login_required
 def show_stream(stream_id):
-    """SHow stream object"""
+    """Show stream object"""
     stream = StreamModel.get_by_id(stream_id)
-    return render_template('show_stream.html', stream=stream)
+    stream_checks = StreamCheckModel.query(StreamCheckModel.stream == stream.key)
+    return render_template('show_stream.html', stream=stream, stream_checks=stream_checks)
 
+def check():
+    """Check all streams"""
+    check_streams()
+    return ''
 
 def warmup():
     """App Engine warmup handler
@@ -93,4 +99,3 @@ def warmup():
 
     """
     return ''
-

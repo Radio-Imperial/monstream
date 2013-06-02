@@ -17,7 +17,7 @@ from models import StreamModel
 class StreamForm(wtf.Form):
 	"""Stream Form"""
 	stream_name = wtf.TextField('Name', validators=[validators.Required()])
-	stream_type = wtf.SelectField('Type', choices=[('shoutcast', 'Shoutcast'), ('shoutcast2', 'Shoutcast 2'), ('icecast', 'Icecast')])
+	stream_type = wtf.SelectField('Type', choices=[('sc', 'Shoutcast'), ('sc2', 'Shoutcast 2')])
 	stream_hostname = wtf.TextField('Hostname', validators=[validators.Required()])
 	stream_port = wtf.IntegerField('Port', [validators.required()])
-	stream_descriptor = wtf.TextField('Stream Descriptor')
+	stream_shoutcast_sid = wtf.IntegerField('Shoutcast SID')

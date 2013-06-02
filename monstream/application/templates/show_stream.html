@@ -20,8 +20,8 @@
                 <dd>{{ stream.stream_hostname }}</dd>
                 <dt>Port</dt>
                 <dd>{{ stream.stream_port }}</dd>
-                <dt>Descriptor</dt>
-                <dd>{{ stream.stream_descriptor }}</dd>
+                <dt>Shoutcast SID</dt>
+                <dd>{{ stream.stream_shoutcast_sid }}</dd>
                 <dt>Added by</dt>
                 <dd>{{ stream.added_by }}</dd>
             </dl>
@@ -36,6 +36,13 @@
                     <button class="btn btn-danger"><i class="icon-trash icon-white"></i> Delete</button>
                 </div>
             </form>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            {% for stream_check in stream_checks %}
+            <p>{{ stream_check.timestamp }}</p>
+            {% endfor %}
         </div>
     </div>
 

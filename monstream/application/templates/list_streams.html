@@ -15,8 +15,8 @@
                         <th>Type</th>
                         <th>Hostname</th>
                         <th>Port</th>
-                        <th>Descriptor</th>
-                        <th>Added by</th>
+                        <th>Shoutcast SID</th>
+                        <th>Added By</th>
                         <th>&nbsp;</th>
                     </tr>
                 </thead>
@@ -28,7 +28,7 @@
                         <td>{{ stream.stream_type }}</td>
                         <td>{{ stream.stream_hostname }}</td>
                         <td>{{ stream.stream_port }}</td>
-                        <td>{{ stream.stream_descriptor }}</td>
+                        <td>{{ stream.stream_shoutcast_sid }}</td>
                         <td>{{ stream.added_by }}</td>
                         <td>
                             <a href="{{ url_for('show_stream', stream_id=stream_id) }}" class="btn">Show &raquo;</a>

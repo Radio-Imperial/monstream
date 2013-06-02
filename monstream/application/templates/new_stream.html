@@ -61,12 +61,12 @@
                     </div>
                 </div>
                 <div class="control-group">
-                    <div class="control-label">{{ form.stream_descriptor.label }}</div>
+                    <div class="control-label">{{ form.stream_shoutcast_sid.label }}</div>
                     <div class="controls">
-                        {{ form.stream_descriptor|safe }}
-                        {% if form.stream_descriptor.errors %}
+                        {{ form.stream_shoutcast_sid|safe }}
+                        {% if form.stream_shoutcast_sid.errors %}
                         <ul class="errors">
-                            {% for error in form.stream_descriptor.errors %}
+                            {% for error in form.stream_shoutcast_sid.errors %}
                             <li>{{ error }}</li>
                             {% endfor %}
                         </ul>

@@ -13,7 +13,7 @@ class StreamModel(ndb.Model):
 	stream_type = ndb.StringProperty(required=True)
 	stream_hostname = ndb.StringProperty(required=True)
 	stream_port = ndb.IntegerProperty(required=True)
-	stream_descriptor = ndb.StringProperty()
+	stream_shoutcast_sid = ndb.IntegerProperty()
 	added_by = ndb.UserProperty()
 
 class StreamCheckModel(ndb.Model):

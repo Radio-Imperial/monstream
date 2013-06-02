@@ -60,12 +60,12 @@
                 </div>
             </div>
             <div class="control-group">
-                <div class="control-label">{{ form.stream_descriptor.label }}</div>
+                <div class="control-label">{{ form.stream_shoutcast_sid.label }}</div>
                 <div class="controls">
-                    {{ form.stream_descriptor|safe }}
-                    {% if form.stream_descriptor.errors %}
+                    {{ form.stream_shoutcast_sid|safe }}
+                    {% if form.stream_shoutcast_sid.errors %}
                     <ul class="errors">
-                        {% for error in form.stream_descriptor.errors %}
+                        {% for error in form.stream_shoutcast_sid.errors %}
                         <li>{{ error }}</li>
                         {% endfor %}
                     </ul>
@@ -75,7 +75,8 @@
             <div class="control-group">
                 <div class="controls">
                     <input class="btn btn-primary" type="submit" value="Save Changes"/>
-                    <a class="btn cancel" href="{{ url_for('list_streams') }}">Cancel</a>
+                    {% set stream_id = stream.key.id() %}
+                    <a class="btn cancel" href="{{ url_for('show_stream', stream_id=stream_id) }}">Cancel</a>
                 </div>
             </div>
         </fieldset>

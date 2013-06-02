@@ -30,6 +30,8 @@ app.add_url_rule('/stream/<int:stream_id>/edit', 'edit_stream', view_func=views.
 # Delete a stream
 app.add_url_rule('/stream/<int:stream_id>/delete', view_func=views.delete_stream, methods=['POST'])
 
+# Check streams
+app.add_url_rule('/check', view_func=views.check, methods=['GET'])
 
 ## Error handlers
 # Handle 404 errors
