@@ -100,9 +100,8 @@ def check():
     return ''
 
 def check_stream(stream_id):
-    """Check streams task queue"""
-    stream = StreamModel.get_by_id(stream_id)
-    check_stream_service(stream)
+    """Check stream"""
+    check_stream_service(stream_id)
     return ''
 
 def warmup():
