@@ -1,0 +1,3 @@
+queue:
+- name: check
+  rate: 1/s

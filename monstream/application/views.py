@@ -9,6 +9,7 @@ For example the *say_hello* handler, handling the URL route '/hello/<username>',
 
 """
 from google.appengine.api import users
+from google.appengine.api import taskqueue
 from google.appengine.runtime.apiproxy_errors import CapabilityDisabledError
 
 from flask import request, render_template, flash, url_for, redirect
@@ -21,7 +22,7 @@ from forms import StreamForm
 from models import StreamModel
 from models import StreamCheckModel
 
-from services import check_streams
+from services import check_stream_service
 
 # Flask-Cache (configured to use App Engine Memcache API)
 cache = Cache(app)
@@ -89,8 +90,19 @@ def show_stream(stream_id):
     return render_template('show_stream.html', stream=stream, stream_checks=stream_checks)
 
 def check():
-    """Check all streams"""
-    check_streams()
+    """Check streams cron job"""
+    streams = StreamModel.query()
+    for stream in streams:
+        stream_id = stream.key.id()
+        queue = taskqueue.Queue('check')
+        task = taskqueue.Task(url='/stream/' + str(stream_id) + '/check', method='GET')
+        queue.add(task)
+    return ''
+
+def check_stream(stream_id):
+    """Check streams task queue"""
+    stream = StreamModel.get_by_id(stream_id)
+    check_stream_service(stream)
     return ''
 
 def warmup():
