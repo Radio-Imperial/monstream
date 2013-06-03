@@ -30,6 +30,24 @@
     <br/>
     <div class="row-fluid">
         <div class="span12">
+            <h3>Listeners</h3>
+            <div id="listeners" style="min-width: 400px; height: 400px; margin: 0 auto"></div> 
+        </div>
+    </div>
+    <br/>
+    <div class="row-fluid">
+        <div class="span6">
+            <h3>Average Listen Time</h3>
+            <div id="average_listen_time" style="min-width: 400px; height: 400px; margin: 0 auto"></div> 
+        </div>
+        <div class="span6">
+            <h3>Max Listen Time</h3>
+            <div id="max_listen_time" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+        </div>
+    </div>
+    <br/>
+    <div class="row-fluid">
+        <div class="span12">
             <form method="post" action="{{ url_for('delete_stream', stream_id=stream_id) }}">
                 <div class="btn-toolbar" style="margin: 0;">
                     <a href="{{ url_for('edit_stream', stream_id=stream_id) }}" class="btn"><i class="icon-pencil"></i> Edit</a>
@@ -38,13 +56,15 @@
             </form>
         </div>
     </div>
-    <div class="row-fluid">
-        <div class="span12">
-            {% for stream_check in stream_checks %}
-            <p>{{ stream_check.timestamp }}</p>
-            {% endfor %}
-        </div>
-    </div>
+    <br/>
+    {% for stream_check in stream_checks %}
+    <p>{{ stream_check.timestamp }}</p>
+    {% endfor %}
 
 {% endblock content %}
 
+{% block tail_script %}
+{% include 'includes/highcharts/listeners.html' %} {# listeners chart #}
+{% include 'includes/highcharts/average_listen_time.html' %} {# average listen time chart #}
+{% include 'includes/highcharts/max_listen_time.html' %} {# average listen time chart #}
+{% endblock tail_script %}

@@ -15,6 +15,7 @@
     <link rel="shortcut icon" href="/static/img/favicon.ico" />
     {% block style_block %}{# page-specific CSS #}{% endblock %}
     <script src="/static/js/lib/modernizr-{{ modernizer_version }}.min.js"></script>{# Modernizr must be here, above body tag. #}
+    
     {% block head_script %}{# defer-incapable JS block #}{% endblock %}
 </head>
 <body>
@@ -29,6 +30,7 @@
         </div><!-- /footer -->
     </footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/{{ jquery_version }}/jquery.min.js"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
     <script src="/static/js/lib/bootstrap-{{ bootstrap_version }}.min.js"></script>
     <script src="/static/js/main.js"></script>
     {% block tail_script %}{# defer-capable JS block #}{% endblock %}
