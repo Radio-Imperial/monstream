@@ -86,7 +86,7 @@ def delete_stream(stream_id):
 def show_stream(stream_id):
     """Show stream object"""
     stream = StreamModel.get_by_id(stream_id)
-    stream_checks = StreamCheckModel.query(StreamCheckModel.stream == stream.key)
+    stream_checks = StreamCheckModel.query(StreamCheckModel.stream == stream.key).order(StreamCheckModel.timestamp)
     return render_template('show_stream.html', stream=stream, stream_checks=stream_checks)
 
 def check():

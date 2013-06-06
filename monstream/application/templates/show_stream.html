@@ -30,18 +30,15 @@
     <br/>
     <div class="row-fluid">
         <div class="span12">
-            <h3>Listeners</h3>
             <div id="listeners" style="min-width: 400px; height: 400px; margin: 0 auto"></div> 
         </div>
     </div>
     <br/>
     <div class="row-fluid">
         <div class="span6">
-            <h3>Average Listen Time</h3>
             <div id="average_listen_time" style="min-width: 400px; height: 400px; margin: 0 auto"></div> 
         </div>
         <div class="span6">
-            <h3>Max Listen Time</h3>
             <div id="max_listen_time" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
         </div>
     </div>
@@ -57,9 +54,6 @@
         </div>
     </div>
     <br/>
-    {% for stream_check in stream_checks %}
-    <p>{{ stream_check.timestamp }}</p>
-    {% endfor %}
 
 {% endblock content %}
 

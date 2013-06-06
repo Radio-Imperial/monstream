@@ -6,6 +6,7 @@ App Engine datastore models
 """
 
 from google.appengine.ext import ndb
+from time import mktime
 
 class StreamModel(ndb.Model):
 	"""Stream Model"""
@@ -25,3 +26,6 @@ class StreamCheckModel(ndb.Model):
 	current_listeners = ndb.IntegerProperty()
 	average_listen_time = ndb.FloatProperty()
 	max_listen_time = ndb.FloatProperty()
+
+	def get_timestamp(self):
+		return int(mktime(self.timestamp.timetuple())) * 1000
