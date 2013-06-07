@@ -8,8 +8,11 @@ For example the *say_hello* handler, handling the URL route '/hello/<username>',
   must be passed *username* as the argument.
 
 """
+from __future__ import division
+
 import logging
 import datetime
+
 
 from google.appengine.api import users
 from google.appengine.api import taskqueue
@@ -108,11 +111,12 @@ def show_stream(stream_id):
             average_listen_time_sum += stream_check.average_listen_time
             average_listen_time_count += 1
 
-    uptime = (uptime_sum / len(stream_checks)) * 100
-    average_listeners = average_listeners_sum / average_listeners_count
+    status = 'Up'
+    uptime = round(((uptime_sum / len(stream_checks)) * 100), 2)
+    average_listeners = round((average_listeners_sum / average_listeners_count), 2)
     average_listen_time = str(datetime.timedelta(seconds=int(average_listen_time_sum / average_listen_time_count)))
 
-    return render_template('show_stream.html', stream=stream, stream_checks=stream_checks, uptime=uptime, average_listeners=average_listeners, average_listen_time=average_listen_time)
+    return render_template('show_stream.html', stream=stream, stream_checks=stream_checks, status=status, uptime=uptime, average_listeners=average_listeners, average_listen_time=average_listen_time)
 
 def check():
     """Check streams cron job"""

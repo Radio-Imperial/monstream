@@ -7,7 +7,7 @@ Stream check functions
 
 import logging
 
-import urllib2
+from urllib2 import URLError, HTTPError
 from google.appengine.api import urlfetch
 import xml.etree.ElementTree as ET
 
@@ -34,14 +34,18 @@ def check_sc2_stream(stream):
 		stream_status = int(root.find('STREAMSTATUS').text)
 		current_listeners = int(root.find('CURRENTLISTENERS').text)
 		average_listen_time = float(root.find('AVERAGETIME').text)
-	except urllib2.URLError, e:
+	except HTTPError, e:
 		logging.error(u'Failed connecting to server: ' + url)
-		logging.error(str(e))
+		logging.error(e.code)
+		server_status = 0
+	except URLError, e:
+		logging.error(u'Failed connecting to server: ' + url)
+		logging.error(e.args)
 		server_status = 0
 	except AttributeError, e:
 		logging.error(u'Failed parsing response from server: ' + url)
 		logging.error(str(e))
-	except Error:
+	except Exception, e:
 		logging.error(str(e))
 
 	add_stream_check(stream, server_status, stream_status, current_listeners, average_listen_time, None)

@@ -30,7 +30,9 @@
                 name: 'Average Listen Time',
                 data: [
                 {% for stream_check in stream_checks %}
+                {% if stream_check.average_listen_time != None %}
                 [{{ stream_check.get_timestamp() }}, {{ stream_check.average_listen_time }}],
+                {% endif %}
                 {% endfor %}
                 ]
             }]

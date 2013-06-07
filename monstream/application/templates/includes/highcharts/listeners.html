@@ -30,7 +30,9 @@
                 name: 'Listeners Over Time',
                 data: [
                 {% for stream_check in stream_checks %}
+                {% if stream_check.current_listeners != None %}
                 [{{ stream_check.get_timestamp() }}, {{ stream_check.current_listeners }}],
+                {% endif %}
                 {% endfor %}
                 ]
             }]

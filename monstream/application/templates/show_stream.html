@@ -30,10 +30,19 @@
                 <dd>{{ stream.added_by }}</dd>
             </dl>
         </div>
-        <div class="span8">
-            <p class="lead">Uptime: {{ uptime }}%</p>
-            <p class="lead">Average Listeners: {{ average_listeners }}</p>
-            <p class="lead">Average Listen Time: {{ average_listen_time }}</p>
+        <div class="span4">
+            <dl class="dl-horizontal">
+                <dt>Status</dt>
+                <dd>{{ status }}</dd>
+                <dt>Uptime</dt>
+                <dd>{{ uptime }}%</dd>
+                <dt>Average Listeners</dt>
+                <dd>{{ average_listeners }}</dd>
+                <dt>Average Listen Time</dt>
+                <dd>{{ average_listen_time }}</dd>
+            </dl>
+        </div>
+        <div class="span4">
         </div>
     </div>
     <br/>
