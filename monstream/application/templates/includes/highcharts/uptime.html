@@ -5,12 +5,12 @@
                 useUTC: false
             }
         });
-        $('#listeners').highcharts({
+        $('#uptime').highcharts({
             chart: {
                 type: 'line',
             },
             title: {
-                text: 'Listeners Over Time',
+                text: 'Uptime',
             },
             xAxis: {
                 type: 'datetime',
@@ -27,7 +27,7 @@
                 enabled: false,
             },
             series: [{
-                name: 'Listeners Over Time',
+                name: 'Uptime',
                 data: [
                 {% for stream_check in stream_checks %}
                 [{{ stream_check.get_timestamp() }}, {{ stream_check.current_listeners }}],

@@ -16,7 +16,6 @@
                         <th>Hostname</th>
                         <th>Port</th>
                         <th>Shoutcast SID</th>
-                        <th>Added By</th>
                         <th>&nbsp;</th>
                     </tr>
                 </thead>
@@ -25,11 +24,14 @@
                     {% set stream_id = stream.key.id() %}
                     <tr>
                         <td>{{ stream.stream_name }}</td>
-                        <td>{{ stream.stream_type }}</td>
+                        {% if stream.stream_type == 'sc2' %}
+                        <td>Shoutcast 2</td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
                         <td>{{ stream.stream_hostname }}</td>
                         <td>{{ stream.stream_port }}</td>
                         <td>{{ stream.stream_shoutcast_sid }}</td>
-                        <td>{{ stream.added_by }}</td>
                         <td>
                             <a href="{{ url_for('show_stream', stream_id=stream_id) }}" class="btn">Show &raquo;</a>
                         </td>
