@@ -8,6 +8,9 @@ For example the *say_hello* handler, handling the URL route '/hello/<username>',
   must be passed *username* as the argument.
 
 """
+import logging
+import datetime
+
 from google.appengine.api import users
 from google.appengine.api import taskqueue
 from google.appengine.runtime.apiproxy_errors import CapabilityDisabledError
@@ -86,8 +89,30 @@ def delete_stream(stream_id):
 def show_stream(stream_id):
     """Show stream object"""
     stream = StreamModel.get_by_id(stream_id)
-    stream_checks = StreamCheckModel.query(StreamCheckModel.stream == stream.key).order(StreamCheckModel.timestamp)
-    return render_template('show_stream.html', stream=stream, stream_checks=stream_checks)
+    stream_checks_query = StreamCheckModel.query().filter(StreamCheckModel.stream == stream.key).order(StreamCheckModel.timestamp)
+    stream_checks = stream_checks_query.fetch(4320)
+    logging.error(str(len(stream_checks)))
+    uptime_sum = 0
+    average_listeners_sum = 0
+    average_listeners_count = 0
+    average_listen_time_count = 0
+    average_listen_time_sum = 0
+
+    for stream_check in stream_checks:
+        if stream_check.stream_status > 0:
+            uptime_sum += 1
+        if stream_check.current_listeners is not None:
+            average_listeners_sum += stream_check.current_listeners
+            average_listeners_count += 1
+        if stream_check.average_listen_time is not None:
+            average_listen_time_sum += stream_check.average_listen_time
+            average_listen_time_count += 1
+
+    uptime = (uptime_sum / len(stream_checks)) * 100
+    average_listeners = average_listeners_sum / average_listeners_count
+    average_listen_time = str(datetime.timedelta(seconds=int(average_listen_time_sum / average_listen_time_count)))
+
+    return render_template('show_stream.html', stream=stream, stream_checks=stream_checks, uptime=uptime, average_listeners=average_listeners, average_listen_time=average_listen_time)
 
 def check():
     """Check streams cron job"""
