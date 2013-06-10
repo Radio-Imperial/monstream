@@ -6,6 +6,7 @@ Stream check functions
 """
 
 import logging
+import numpy
 
 from urllib2 import URLError, HTTPError
 from google.appengine.api import urlfetch
@@ -61,6 +62,21 @@ def add_stream_check(stream, server_status, stream_status, current_listeners, av
 	)
 	try:
 		stream_check.put()
-		# stream_check_id = stream_check.key.id()
 	except CapabilityDisabledError:
 		logging.error(u'App Engine Datastore is currently in read-only mode.')
+
+def get_server_uptime_moving_average(stream_checks, window_size):
+	interval = []
+	for stream_check in stream_checks:
+		interval.append(stream_check.server_status)
+	return moving_average(interval, window_size)
+
+def get_stream_uptime_moving_average(stream_checks, window_size):
+	interval = []
+	for stream_check in stream_checks:
+		interval.append(stream_check.stream_status)
+	return moving_average(interval, window_size)
+
+def moving_average(interval, window_size):
+	weigths = numpy.repeat(1.0, window_size) / window_size
+	return numpy.convolve(interval, weigths, 'valid')

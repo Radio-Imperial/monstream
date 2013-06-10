@@ -1,0 +1,49 @@
+<script type="text/javascript">
+    $(function () {
+        Highcharts.setOptions({
+            global: {
+                useUTC: false
+            }
+        });
+        $('#uptime').highcharts({
+            chart: {
+                type: 'line',
+            },
+            title: {
+                text: 'Uptime (1-Day MA)',
+            },
+            xAxis: {
+                type: 'datetime',
+                title: {
+                    text: 'Time'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Uptime',
+                }
+            },
+            legend: {
+                enabled: true,
+            },
+            series: [
+                {
+                    name: 'Server Uptime',
+                    data: [
+                    {% for server_uptime_point in server_uptime_moving_average %}
+                    [{{ server_uptime_point }}],
+                    {% endfor %}
+                    ]
+                },
+                {
+                    name: 'Stream Uptime',
+                    data: [
+                    {% for stream_uptime_point in stream_uptime_moving_average %}
+                    [{{ stream_uptime_point }}],
+                    {% endfor %}
+                    ]
+                }
+            ]
+        });
+    });
+</script>

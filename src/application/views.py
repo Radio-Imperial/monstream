@@ -13,7 +13,6 @@ from __future__ import division
 import logging
 import datetime
 
-
 from google.appengine.api import users
 from google.appengine.api import taskqueue
 from google.appengine.runtime.apiproxy_errors import CapabilityDisabledError
@@ -29,6 +28,8 @@ from models import StreamModel
 from models import StreamCheckModel
 
 from services import check_stream_service
+from services import get_stream_uptime_moving_average
+from services import get_server_uptime_moving_average
 
 # Flask-Cache (configured to use App Engine Memcache API)
 cache = Cache(app)
@@ -95,15 +96,18 @@ def show_stream(stream_id):
     stream_checks_query = StreamCheckModel.query().filter(StreamCheckModel.stream == stream.key).order(StreamCheckModel.timestamp)
     stream_checks = stream_checks_query.fetch(4320)
     logging.error(str(len(stream_checks)))
-    uptime_sum = 0
+    server_uptime_sum = 0
+    stream_uptime_sum = 0
     average_listeners_sum = 0
     average_listeners_count = 0
     average_listen_time_count = 0
     average_listen_time_sum = 0
 
     for stream_check in stream_checks:
+        if stream_check.server_status > 0:
+            server_uptime_sum += 1
         if stream_check.stream_status > 0:
-            uptime_sum += 1
+            stream_uptime_sum += 1
         if stream_check.current_listeners is not None:
             average_listeners_sum += stream_check.current_listeners
             average_listeners_count += 1
@@ -112,11 +116,37 @@ def show_stream(stream_id):
             average_listen_time_count += 1
 
     status = 'Up'
-    uptime = round(((uptime_sum / len(stream_checks)) * 100), 2)
-    average_listeners = round((average_listeners_sum / average_listeners_count), 2)
-    average_listen_time = str(datetime.timedelta(seconds=int(average_listen_time_sum / average_listen_time_count)))
+    if len(stream_checks) > 0:
+        server_uptime = round(((server_uptime_sum / len(stream_checks)) * 100), 2)
+        stream_uptime = round(((stream_uptime_sum / len(stream_checks)) * 100), 2)
+        server_uptime_moving_average = get_server_uptime_moving_average(stream_checks, 144)
+        stream_uptime_moving_average = get_stream_uptime_moving_average(stream_checks, 144)
+    else:
+        server_uptime = 0.0
+        stream_uptime = 0.0
+        server_uptime_moving_average = []
+        stream_uptime_moving_average = []
+    if average_listeners_count > 0:
+        average_listeners = round((average_listeners_sum / average_listeners_count), 2)
+    else:
+        average_listeners = 0
+    if average_listen_time_count > 0:
+        average_listen_time = str(datetime.timedelta(seconds=int(average_listen_time_sum / average_listen_time_count)))
+    else:
+        average_listen_time = 0
+    
 
-    return render_template('show_stream.html', stream=stream, stream_checks=stream_checks, status=status, uptime=uptime, average_listeners=average_listeners, average_listen_time=average_listen_time)
+    return render_template(
+        'show_stream.html', 
+        stream=stream, 
+        stream_checks=stream_checks, 
+        status=status, 
+        server_uptime=server_uptime, 
+        stream_uptime=stream_uptime, 
+        average_listeners=average_listeners, 
+        server_uptime_moving_average=server_uptime_moving_average,
+        stream_uptime_moving_average=stream_uptime_moving_average,
+        average_listen_time=average_listen_time)
 
 def check():
     """Check streams cron job"""

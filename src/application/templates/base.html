@@ -9,6 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
     <title>{% block title%}Monstream{% endblock %}</title>
     <link href="/static/css/bootstrap-{{ bootstrap_version }}.min.css" rel="stylesheet" />
+    <link href="/static/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="/static/css/font-awesome.min.css">
     <style> body { padding-top: 90px; } </style> <!-- Bootstrap -->
     <link href="/static/css/main.css" rel="stylesheet" />
@@ -32,6 +33,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/{{ jquery_version }}/jquery.min.js"></script>
     <script src="http://code.highcharts.com/highcharts.js"></script>
     <script src="/static/js/lib/bootstrap-{{ bootstrap_version }}.min.js"></script>
+    <script src="/static/js/lib/bootstrap-datetimepicker.min.js"></script>
     <script src="/static/js/main.js"></script>
     {% block tail_script %}{# defer-capable JS block #}{% endblock %}
     {{ profiler_includes|safe }}
