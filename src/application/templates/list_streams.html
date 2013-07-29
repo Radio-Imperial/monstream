@@ -15,7 +15,8 @@
                         <th>Type</th>
                         <th>Hostname</th>
                         <th>Port</th>
-                        <th>Shoutcast SID</th>
+                        <th>SID</th>
+                        <th>Mount</th>
                         <th>&nbsp;</th>
                     </tr>
                 </thead>
@@ -27,11 +28,16 @@
                         {% if stream.stream_type == 'sc2' %}
                         <td>Shoutcast 2</td>
                         {% else %}
+                        {% if stream.stream_type == 'ic2'%}
+                        <td>Icecast 2</td>
+                        {% else %}
                         <td></td>
+                        {% endif %}
                         {% endif %}
                         <td>{{ stream.stream_hostname }}</td>
                         <td>{{ stream.stream_port }}</td>
-                        <td>{{ stream.stream_shoutcast_sid }}</td>
+                        <td>{{ stream.stream_sid }}</td>
+                        <td>{{ stream.stream_mount }}</td>
                         <td>
                             <a href="{{ url_for('show_stream', stream_id=stream_id) }}" class="btn">Show &raquo;</a>
                         </td>

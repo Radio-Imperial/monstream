@@ -19,9 +19,43 @@ def check_stream_service(stream_id):
 	stream = StreamModel.get_by_id(stream_id)
 	if stream.stream_type == 'sc2':
 		check_sc2_stream(stream)
+	elif stream.stream_type == 'ic2':
+		check_ic2_stream(stream)
+
+def check_ic2_stream(stream):
+	url = "http://" + stream.stream_hostname + ":" + str(stream.stream_port) + "/xml_status.xsl?mount=" + str(stream.stream_mount)
+
+	server_status = 0
+	stream_status = 0
+	current_listeners = None
+
+	try:
+		res = urlfetch.fetch(url, method=urlfetch.GET, deadline=10)
+		server_status = 1
+		root = ET.fromstring(res.content)
+		for source in root.findall('source'):
+			mount = source.find('mount').text
+			if (mount == stream.stream_mount):
+				stream_status = 1
+				current_listeners = int(source.find('listeners').text)
+	except HTTPError, e:
+		logging.error(u'Failed connecting to server: ' + url)
+		logging.error(e.code)
+		server_status = 0
+	except URLError, e:
+		logging.error(u'Failed connecting to server: ' + url)
+		logging.error(e.args)
+		server_status = 0
+	except AttributeError, e:
+		logging.error(u'Failed parsing response from server: ' + url)
+		logging.error(str(e))
+	except Exception, e:
+		logging.error(str(e))
+
+	add_stream_check(stream, server_status, stream_status, current_listeners, None, None)
 
 def check_sc2_stream(stream):
-	url = "http://" + stream.stream_hostname + ":" + str(stream.stream_port) + "/stats?sid=" + str(stream.stream_shoutcast_sid)
+	url = "http://" + stream.stream_hostname + ":" + str(stream.stream_port) + "/stats?sid=" + str(stream.stream_sid)
 
 	server_status = 0
 	stream_status = 0

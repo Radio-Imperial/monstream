@@ -42,39 +42,43 @@ def list_streams():
     """List all streams"""
     streams = StreamModel.query()
     form = StreamForm()
-    if form.validate_on_submit():
-        stream = StreamModel(
-            stream_name = form.stream_name.data,
-            stream_type = form.stream_type.data,
-            stream_hostname = form.stream_hostname.data,
-            stream_port = form.stream_port.data,
-            stream_shoutcast_sid = form.stream_shoutcast_sid.data,
-            added_by = users.get_current_user()
-        )
-        try:
-            stream.put()
-            stream_id = stream.key.id()
-            flash(u'Stream %s successfully saved.' % stream_id, 'success')
-            return redirect(url_for('list_streams'))
-        except CapabilityDisabledError:
-            flash(u'App Engine Datastore is currently in read-only mode.', 'info')
-            return redirect(url_for('list_streams'))
+    if form.is_submitted():
+        if form.validate():
+            stream = StreamModel(
+                stream_name = form.stream_name.data,
+                stream_type = form.stream_type.data,
+                stream_hostname = form.stream_hostname.data,
+                stream_port = form.stream_port.data,
+                stream_sid = form.stream_sid.data,
+                stream_mount = form.stream_mount.data,
+                added_by = users.get_current_user()
+            )
+            try:
+                stream.put()
+                stream_id = stream.key.id()
+                flash(u'Stream %s successfully saved.' % stream_id, 'success')
+                return redirect(url_for('list_streams'))
+            except CapabilityDisabledError:
+                flash(u'App Engine Datastore is currently in read-only mode.', 'info')
+                return redirect(url_for('list_streams'))
+        else:
+            flash(u'Error validating stream. Please check your input.', 'error')
     return render_template('list_streams.html', streams=streams, form=form)
 
 @login_required
 def edit_stream(stream_id):
     stream = StreamModel.get_by_id(stream_id)
     form = StreamForm(obj=stream)
-    if request.method == "POST":
-        if form.validate_on_submit():
-            stream.stream_name = form.data.get('stream_name')
-            stream.stream_type = form.data.get('stream_type')
-            stream.stream_hostname = form.data.get('stream_hostname')
-            stream.stream_port = form.data.get('stream_port')
-            stream.stream_shoutcast_sid = form.data.get('stream_shoutcast_sid')
-            stream.put()
-            flash(u'Stream %s successfully saved.' % stream_id, 'success')
-            return redirect(url_for('list_streams'))
+    if form.validate_on_submit():
+        stream.stream_name = form.data.get('stream_name')
+        stream.stream_type = form.data.get('stream_type')
+        stream.stream_hostname = form.data.get('stream_hostname')
+        stream.stream_port = form.data.get('stream_port')
+        stream.stream_sid = form.data.get('stream_sid')
+        stream.stream_mount = form.data.get('stream_mount')
+        stream.put()
+        flash(u'Stream %s successfully saved.' % stream_id, 'success')
+        return redirect(url_for('list_streams'))
     return render_template('edit_stream.html', stream=stream, form=form)
 
 @login_required
