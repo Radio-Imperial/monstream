@@ -99,6 +99,7 @@ def show_stream(stream_id):
     stream = StreamModel.get_by_id(stream_id)
     stream_checks_query = StreamCheckModel.query().filter(StreamCheckModel.stream == stream.key).order(StreamCheckModel.timestamp)
     stream_checks = stream_checks_query.fetch(4320)
+    # streams_checks = StreamModel.gql("SELECT * FROM StreamCheckModel WHERE timestamp > DATETIME('2013-07-29 20:00:00') AND stream = KEY('ag9zfm1vbnN0cmVhbS13ZWJyGAsSC1N0cmVhbU1vZGVsGICAgICAgIAKDA') ORDER BY timestamp ASC LIMIT 1000'").fetch()
     logging.error(str(len(stream_checks)))
     server_uptime_sum = 0
     stream_uptime_sum = 0
