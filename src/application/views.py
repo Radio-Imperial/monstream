@@ -11,7 +11,7 @@ For example the *say_hello* handler, handling the URL route '/hello/<username>',
 from __future__ import division
 
 import logging
-import datetime
+from datetime import datetime, timedelta
 
 from google.appengine.api import users
 from google.appengine.api import taskqueue
@@ -96,10 +96,20 @@ def delete_stream(stream_id):
 @login_required
 def show_stream(stream_id):
     """Show stream object"""
+    start_date_str = request.values.get('start', None)
+    end_date_str = request.values.get('end', None)
+    if start_date_str is not None:
+        start_date = datetime.strptime(start_date_str, "%m/%d/%Y %I:%M:%S %p")
+    else:
+        start_date = datetime.now()
+        start_date += timedelta(days=-1)
+    if end_date_str is not None:
+        end_date = datetime.strptime(end_date_str, "%m/%d/%Y %I:%M:%S %p")
+    else:
+        end_date = datetime.now()
     stream = StreamModel.get_by_id(stream_id)
-    stream_checks_query = StreamCheckModel.query().filter(StreamCheckModel.stream == stream.key).order(StreamCheckModel.timestamp)
-    stream_checks = stream_checks_query.fetch(4320)
-    # streams_checks = StreamModel.gql("SELECT * FROM StreamCheckModel WHERE timestamp > DATETIME('2013-07-29 20:00:00') AND stream = KEY('ag9zfm1vbnN0cmVhbS13ZWJyGAsSC1N0cmVhbU1vZGVsGICAgICAgIAKDA') ORDER BY timestamp ASC LIMIT 1000'").fetch()
+    stream_checks_query = StreamCheckModel.query().filter(StreamCheckModel.stream == stream.key, StreamCheckModel.timestamp >= start_date, StreamCheckModel.timestamp <= end_date).order(StreamCheckModel.timestamp)
+    stream_checks = stream_checks_query.fetch(1000)
     logging.error(str(len(stream_checks)))
     server_uptime_sum = 0
     stream_uptime_sum = 0
@@ -136,7 +146,7 @@ def show_stream(stream_id):
     else:
         average_listeners = 0
     if average_listen_time_count > 0:
-        average_listen_time = str(datetime.timedelta(seconds=int(average_listen_time_sum / average_listen_time_count)))
+        average_listen_time = str(timedelta(seconds=int(average_listen_time_sum / average_listen_time_count)))
     else:
         average_listen_time = 0
     
@@ -151,7 +161,9 @@ def show_stream(stream_id):
         average_listeners=average_listeners, 
         server_uptime_moving_average=server_uptime_moving_average,
         stream_uptime_moving_average=stream_uptime_moving_average,
-        average_listen_time=average_listen_time)
+        average_listen_time=average_listen_time,
+        start_date=start_date.strftime("%B %d, %Y %H:%M:%S"),
+        end_date=end_date.strftime("%B %d, %Y %H:%M:%S"))
 
 def check():
     """Check streams cron job"""

@@ -7,23 +7,25 @@
         </div>
         <div class="span8" style="margin-top: -25px; margin-bottom: 25px;">
             <div class="well pull-right">
-                <div id="datetimepicker-start" class="input-append">
-                    <label for="start">Start</label>
-                    <input data-format="MM/dd/yyyy HH:mm:ss PP" type="text" id="start"></input>
-                    <span class="add-on">
-                        <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-                    </span>
-                </div>
-                &nbsp;
-                <div id="datetimepicker-end" class="input-append">
-                    <label for="end">End</label>
-                    <input data-format="MM/dd/yyyy HH:mm:ss PP" type="text" id="end"></input>
-                    <span class="add-on">
+                <form name="datepicker" action="" method="get">
+                    <div id="datetimepicker-start" class="input-append">
+                        <label for="start">Start</label>
+                        <input data-format="MM/dd/yyyy HH:mm:ss PP" type="text" name="start"></input>
+                        <span class="add-on">
                             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-                    </span>
-                </div>
-                &nbsp;
-                <button type="button" class="btn btn-primary btn-large">Submit</button>
+                        </span>
+                    </div>
+                    &nbsp;
+                    <div id="datetimepicker-end" class="input-append">
+                        <label for="end">End</label>
+                        <input data-format="MM/dd/yyyy HH:mm:ss PP" type="text" name="end"></input>
+                        <span class="add-on">
+                                <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                        </span>
+                    </div>
+                    &nbsp;
+                    <button type="submit" class="btn btn-primary btn-large">Submit</button>
+                </form>
             </div>
         </div>
     </div>
@@ -127,10 +129,8 @@
         });
         var datetimepickerStart = $('#datetimepicker-start').data('datetimepicker');
         var datetimepickerEnd = $('#datetimepicker-end').data('datetimepicker');
-        var startDate = new Date();
-        startDate.setDate(startDate.getDate()-1);
-        datetimepickerStart.setLocalDate(startDate);
-        datetimepickerEnd.setLocalDate(new Date());
+        datetimepickerStart.setLocalDate(new Date('{{ start_date }}'));
+        datetimepickerEnd.setLocalDate(new Date('{{ end_date }}'));
     });
 </script>
 
