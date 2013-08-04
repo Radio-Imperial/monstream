@@ -101,16 +101,15 @@ def show_stream(stream_id):
     if start_date_str is not None:
         start_date = datetime.strptime(start_date_str, "%m/%d/%Y %I:%M:%S %p")
     else:
-        start_date = datetime.now()
+        start_date = datetime.utcnow()
         start_date += timedelta(days=-1)
     if end_date_str is not None:
         end_date = datetime.strptime(end_date_str, "%m/%d/%Y %I:%M:%S %p")
     else:
-        end_date = datetime.now()
+        end_date = datetime.utcnow()
     stream = StreamModel.get_by_id(stream_id)
     stream_checks_query = StreamCheckModel.query().filter(StreamCheckModel.stream == stream.key, StreamCheckModel.timestamp >= start_date, StreamCheckModel.timestamp <= end_date).order(StreamCheckModel.timestamp)
     stream_checks = stream_checks_query.fetch(1000)
-    logging.error(str(len(stream_checks)))
     server_uptime_sum = 0
     stream_uptime_sum = 0
     average_listeners_sum = 0
@@ -131,6 +130,7 @@ def show_stream(stream_id):
             average_listen_time_count += 1
 
     status = 'Up'
+
     if len(stream_checks) > 0:
         server_uptime = round(((server_uptime_sum / len(stream_checks)) * 100), 2)
         stream_uptime = round(((stream_uptime_sum / len(stream_checks)) * 100), 2)
@@ -149,7 +149,6 @@ def show_stream(stream_id):
         average_listen_time = str(timedelta(seconds=int(average_listen_time_sum / average_listen_time_count)))
     else:
         average_listen_time = 0
-    
 
     return render_template(
         'show_stream.html', 

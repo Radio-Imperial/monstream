@@ -129,8 +129,12 @@
         });
         var datetimepickerStart = $('#datetimepicker-start').data('datetimepicker');
         var datetimepickerEnd = $('#datetimepicker-end').data('datetimepicker');
-        datetimepickerStart.setLocalDate(new Date('{{ start_date }}'));
-        datetimepickerEnd.setLocalDate(new Date('{{ end_date }}'));
+        var startDate = new Date('{{ start_date }}');
+        var endDate = new Date('{{ end_date }}');
+        startDate = new Date(Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), startDate.getHours(), startDate.getMinutes(), startDate.getSeconds()));
+        endDate = new Date(Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), endDate.getHours(), endDate.getMinutes(), endDate.getSeconds()));
+        datetimepickerStart.setLocalDate(startDate);
+        datetimepickerEnd.setLocalDate(endDate);
     });
 </script>
 
