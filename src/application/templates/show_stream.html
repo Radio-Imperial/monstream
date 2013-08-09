@@ -7,7 +7,7 @@
         </div>
         <div class="span8" style="margin-top: -25px; margin-bottom: 25px;">
             <div class="well pull-right">
-                <form name="datepicker" action="" method="get">
+                <form name="datepicker" action="javascript:submitDatepickerForm()" method="get">
                     <div id="datetimepicker-start" class="input-append">
                         <label for="start">Start</label>
                         <input data-format="MM/dd/yyyy HH:mm:ss PP" type="text" name="start"></input>
@@ -136,6 +136,12 @@
         datetimepickerStart.setLocalDate(startDate);
         datetimepickerEnd.setLocalDate(endDate);
     });
+</script>
+
+<script type="text/javascript">
+    function submitDatepickerForm() {
+        console.log
+    }
 </script>
 
 {% endblock tail_script %}
