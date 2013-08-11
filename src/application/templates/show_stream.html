@@ -8,7 +8,7 @@
         <div class="span8" style="margin-top: -25px; margin-bottom: 25px;">
             <div class="well pull-right">
                 <form name="datepicker" action="javascript:submitDatepickerForm()" method="get">
-                    <div id="datetimepicker-start" class="input-append">
+                    <div id="start" class="input-append">
                         <label for="start">Start</label>
                         <input data-format="MM/dd/yyyy HH:mm:ss PP" type="text" name="start"></input>
                         <span class="add-on">
@@ -16,7 +16,7 @@
                         </span>
                     </div>
                     &nbsp;
-                    <div id="datetimepicker-end" class="input-append">
+                    <div id="end" class="input-append">
                         <label for="end">End</label>
                         <input data-format="MM/dd/yyyy HH:mm:ss PP" type="text" name="end"></input>
                         <span class="add-on">
@@ -119,28 +119,30 @@
 
 <script type="text/javascript">
     $(function() {
-        $('#datetimepicker-end').datetimepicker({
+        $('#end').datetimepicker({
             language: 'en',
             pick12HourFormat: true
         });
-        $('#datetimepicker-start').datetimepicker({
+        $('#start').datetimepicker({
             language: 'en',
             pick12HourFormat: true
         });
-        var datetimepickerStart = $('#datetimepicker-start').data('datetimepicker');
-        var datetimepickerEnd = $('#datetimepicker-end').data('datetimepicker');
+        var start = $('#start').data('datetimepicker');
+        var end = $('#end').data('datetimepicker');
         var startDate = new Date('{{ start_date }}');
         var endDate = new Date('{{ end_date }}');
         startDate = new Date(Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), startDate.getHours(), startDate.getMinutes(), startDate.getSeconds()));
         endDate = new Date(Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), endDate.getHours(), endDate.getMinutes(), endDate.getSeconds()));
-        datetimepickerStart.setLocalDate(startDate);
-        datetimepickerEnd.setLocalDate(endDate);
+        start.setLocalDate(startDate);
+        end.setLocalDate(endDate);
     });
 </script>
 
 <script type="text/javascript">
     function submitDatepickerForm() {
-        console.log
+        var start = $('#start').data('datetimepicker');
+        var end = $('#end').data('datetimepicker');
+        location.href= location.pathname +'?s=' + start.getLocalDate().getTime() + '&e=' + end.getLocalDate().getTime();
     }
 </script>
 

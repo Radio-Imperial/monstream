@@ -96,15 +96,15 @@ def delete_stream(stream_id):
 @login_required
 def show_stream(stream_id):
     """Show stream object"""
-    start_date_str = request.values.get('start', None)
-    end_date_str = request.values.get('end', None)
+    start_date_str = request.values.get('s', None)
+    end_date_str = request.values.get('e', None)
     if start_date_str is not None:
-        start_date = datetime.strptime(start_date_str, "%m/%d/%Y %I:%M:%S %p")
+        start_date = datetime.fromtimestamp(int(start_date_str) / 1000)
     else:
         start_date = datetime.utcnow()
         start_date += timedelta(days=-1)
     if end_date_str is not None:
-        end_date = datetime.strptime(end_date_str, "%m/%d/%Y %I:%M:%S %p")
+        end_date = datetime.fromtimestamp(int(end_date_str) / 1000)
     else:
         end_date = datetime.utcnow()
     stream = StreamModel.get_by_id(stream_id)
