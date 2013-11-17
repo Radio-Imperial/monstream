@@ -1,4 +1,4 @@
 monstream-gae
 =============
 
-Simple monitoring application for stream servers.
+Simple monitoring for ShoutCast and IceCast streaming servers.
